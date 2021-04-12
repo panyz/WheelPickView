@@ -14,4 +14,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+    <Button
+        android:id="@+id/btn2"
+        app:layout_constraintStart_toEndOf="@id/btn"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="TIME PickView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

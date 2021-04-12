@@ -54,21 +54,20 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
             btnSubmit.setOnClickListener(this);
             btnCancel.setOnClickListener(this);
 
-//            //设置文字
-//            btnSubmit.setText(TextUtils.isEmpty(mPickerOptions.textContentConfirm) ? context.getResources().getString(R.string.pickerview_submit) : mPickerOptions.textContentConfirm);
-//            btnCancel.setText(TextUtils.isEmpty(mPickerOptions.textContentCancel) ? context.getResources().getString(R.string.pickerview_cancel) : mPickerOptions.textContentCancel);
-//            tvTitle.setText(TextUtils.isEmpty(mPickerOptions.textContentTitle) ? "" : mPickerOptions.textContentTitle);//默认为空
+            //设置文字
+            btnSubmit.setText(TextUtils.isEmpty(mPickerOptions.textContentConfirm) ? context.getResources().getString(R.string.pickerview_submit) : mPickerOptions.textContentConfirm);
+            btnCancel.setText(TextUtils.isEmpty(mPickerOptions.textContentCancel) ? context.getResources().getString(R.string.pickerview_cancel) : mPickerOptions.textContentCancel);
+            tvTitle.setText(TextUtils.isEmpty(mPickerOptions.textContentTitle) ? "" : mPickerOptions.textContentTitle);//默认为空
 
-//            //设置color
-//            btnSubmit.setTextColor(mPickerOptions.textColorConfirm);
-//            btnCancel.setTextColor(mPickerOptions.textColorCancel);
-//            tvTitle.setTextColor(mPickerOptions.textColorTitle);
-//            rv_top_bar.setBackgroundColor(mPickerOptions.bgColorTitle);
-//
-//            //设置文字大小
-//            btnSubmit.setTextSize(mPickerOptions.textSizeSubmitCancel);
-//            btnCancel.setTextSize(mPickerOptions.textSizeSubmitCancel);
-//            tvTitle.setTextSize(mPickerOptions.textSizeTitle);
+            //设置color
+            btnSubmit.setTextColor(mPickerOptions.textColorConfirm);
+            btnCancel.setTextColor(mPickerOptions.textColorCancel);
+            tvTitle.setTextColor(mPickerOptions.textColorTitle);
+            rv_top_bar.setBackgroundColor(mPickerOptions.bgColorTitle);
+            //设置文字大小
+            btnSubmit.setTextSize(mPickerOptions.textSizeSubmitCancel);
+            btnCancel.setTextSize(mPickerOptions.textSizeSubmitCancel);
+            tvTitle.setTextSize(mPickerOptions.textSizeTitle);
         } else {
             mPickerOptions.customListener.customLayout(LayoutInflater.from(context).inflate(mPickerOptions.layoutRes, contentContainer));
         }

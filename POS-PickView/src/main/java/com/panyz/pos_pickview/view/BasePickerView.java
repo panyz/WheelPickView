@@ -75,10 +75,6 @@ public class BasePickerView {
             });
         } else {
             //如果只是要显示在屏幕的下方
-            //decorView是activity的根View,包含 contentView 和 titleView
-//            if (mPickerOptions.decorView == null) {
-//                mPickerOptions.decorView = (ViewGroup) ((Activity) context).getWindow().getDecorView();
-//            }
             if (mPickerOptions.decorView == null) {
                 mPickerOptions.decorView = (ViewGroup) ((Activity) context).getWindow().getDecorView().findViewById(android.R.id.content);
             }

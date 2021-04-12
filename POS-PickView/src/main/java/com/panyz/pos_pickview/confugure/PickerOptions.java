@@ -6,6 +6,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.core.content.ContextCompat;
+
 import com.panyz.pos_pickview.R;
 import com.panyz.pos_pickview.listener.CustomListener;
 import com.panyz.pos_pickview.listener.OnOptionsSelectChangeListener;
@@ -17,12 +19,6 @@ import com.panyz.pos_pickview.view.WheelView;
 import java.util.Calendar;
 
 public class PickerOptions {
-    //constant
-    private static final int PICKER_VIEW_BTN_COLOR_NORMAL = 0xFF057dff;
-    private static final int PICKER_VIEW_BG_COLOR_TITLE = 0xFFf5f5f5;
-    private static final int PICKER_VIEW_COLOR_TITLE = 0xFF000000;
-    private static final int PICKER_VIEW_BG_COLOR_DEFAULT = 0xFFFFFFFF;
-
     public static final int TYPE_PICKER_OPTIONS = 1;
     public static final int TYPE_PICKER_TIME = 2;
 
@@ -64,11 +60,21 @@ public class PickerOptions {
 
     public PickerOptions(Context context, int buildType) {
         this.context = context;
+        initRes(context);
         if (buildType == TYPE_PICKER_OPTIONS) {
             layoutRes = R.layout.pickerview_options;
         } else {
             layoutRes = R.layout.pickerview_time;
         }
+    }
+
+    private void initRes(Context context) {
+        textColorConfirm = ContextCompat.getColor(context, R.color.color_ffffff);
+        textColorCancel = ContextCompat.getColor(context, R.color.color_0078FF);
+        textColorTitle = ContextCompat.getColor(context, R.color.color_272C32);
+        bgColorTitle = ContextCompat.getColor(context, R.color.color_F4F4F6);
+        bgColorWheel = ContextCompat.getColor(context, R.color.color_ffffff);
+
     }
 
     //******* general field ******//
@@ -81,23 +87,22 @@ public class PickerOptions {
     public String textContentCancel;//取消按钮文字
     public String textContentTitle;//标题文字
 
-    public int textColorConfirm = PICKER_VIEW_BTN_COLOR_NORMAL;//确定按钮颜色
-    public int textColorCancel = PICKER_VIEW_BTN_COLOR_NORMAL;//取消按钮颜色
-    public int textColorTitle = PICKER_VIEW_COLOR_TITLE;//标题颜色
+    public int textColorConfirm;//确定按钮颜色
+    public int textColorCancel;//取消按钮颜色
+    public int textColorTitle;//标题颜色
+    public int bgColorWheel;//滚轮背景颜色
+    public int bgColorTitle;//标题背景颜色
 
-    public int bgColorWheel = PICKER_VIEW_BG_COLOR_DEFAULT;//滚轮背景颜色
-    public int bgColorTitle = PICKER_VIEW_BG_COLOR_TITLE;//标题背景颜色
-
-    public int textSizeSubmitCancel = 17;//确定取消按钮大小
-    public int textSizeTitle = 18;//标题文字大小
-    public int textSizeContent = 18;//内容文字大小
+    public int textSizeSubmitCancel = 16;//确定取消按钮大小
+    public int textSizeTitle = 16;//标题文字大小
+    public int textSizeContent = 16;//内容文字大小
 
     public int textColorOut = 0xFFa8a8a8; //分割线以外的文字颜色
     public int textColorCenter = 0xFF2a2a2a; //分割线之间的文字颜色
     public int dividerColor = 0xFF0078FF; //分割线的颜色
     public int outSideColor = -1; //显示时的外部背景色颜色,默认是灰色
 
-    public float lineSpacingMultiplier = 1.6f; // 条目间距倍数 默认1.6
+    public float lineSpacingMultiplier = 2.5f; // 条目间距倍数 默认1.6
     public boolean isDialog;//是否是对话框模式
 
     public boolean cancelable = true;//是否能取消
