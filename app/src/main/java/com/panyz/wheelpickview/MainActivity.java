@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.panyz.pos_pickview.builder.OptionsPickerBuilder;
 import com.panyz.pos_pickview.builder.TimePickerBuilder;
@@ -29,7 +30,7 @@ import static com.panyz.pos_pickview.confugure.PickerOptions.TYPE_PICKER_OPTIONS
 
 public class MainActivity extends AppCompatActivity {
 
-    private static SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy",Locale.getDefault());
+    private static SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     @Override
@@ -57,20 +58,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showDatePickView() {
-        SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> mSelectRange = new SimpleMonthAdapter.SelectedDays<>();
-        mSelectRange.setFirst(new SimpleMonthAdapter.CalendarDay(strToCalander(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))));
-        mSelectRange.setLast(new SimpleMonthAdapter.CalendarDay(strToCalander(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))));
+//        SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> mSelectRange = new SimpleMonthAdapter.SelectedDays<>();
+//        mSelectRange.setFirst(new SimpleMonthAdapter.CalendarDay(strToCalander(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))));
+//        mSelectRange.setLast(new SimpleMonthAdapter.CalendarDay(strToCalander(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))));
 
         String currentDate = dateFormat.format(new Date());
         String mStartDay = getFirstDayOfMonth(Integer.parseInt(currentDate.split("-")[1]));
         String mEndDay = getLastDayOfMonth(Integer.parseInt(currentDate.split("-")[1]));
 
-//        etMemberDate.setText(DateUtil.getMonthDayFormat(mStartDay) + "~" + DateUtil.getMonthDayFormat(mEndDay));
-        mSelectRange = new SimpleMonthAdapter.SelectedDays<>();
-//        mSelectRange.setFirst(new SimpleMonthAdapter.CalendarDay(strToCalander(mStartDay)));
-//        mSelectRange.setLast(new SimpleMonthAdapter.CalendarDay(strToCalander(mEndDay)));
+        SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> mSelectRange = new SimpleMonthAdapter.SelectedDays<>();
+        mSelectRange.setFirst(new SimpleMonthAdapter.CalendarDay(strToCalander(mStartDay)));
+        mSelectRange.setLast(new SimpleMonthAdapter.CalendarDay(strToCalander(mEndDay)));
 
-        DatePickView datePickView = new DatePickView(this, DatePickView.MODE_SINGLE,mSelectRange,currentDate);
+        DatePickView datePickView = new DatePickView.Builder(this)
+                .mode(DatePickView.MODE_RANGE)
+                .dateRange(mSelectRange)
+                .build();
+        datePickView.setOnDateSelectedListener(new DatePickView.OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> mSelectData) {
+                Toast.makeText(MainActivity.this, mSelectData.getFirst().toString() + "-" + mSelectData.getLast().toString(), Toast.LENGTH_LONG).show();
+            }
+        });
         datePickView.show();
     }
 

@@ -28,7 +28,7 @@ public class CalendarFragment extends DialogFragment implements DatePickerContro
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDayPickerView = (DayPickerView) view.findViewById(R.id.pickerView);
-        mDayPickerView.setController(this,mStartDay, this.mRange);
+        mDayPickerView.setController(this,mStartDay, 0,this.mRange);
         int monthCount = mDayPickerView.getAdapter().getItemCount();
         mDayPickerView.smoothScrollToPosition(monthCount);
         return view;

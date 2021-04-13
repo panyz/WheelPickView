@@ -26,6 +26,7 @@ public class DayPickerView extends RecyclerView {
     private OnScrollListener onScrollListener;
     private int smoothToMonthIndex;
 
+
     public DayPickerView(Context context) {
         this(context, null);
     }
@@ -43,11 +44,12 @@ public class DayPickerView extends RecyclerView {
         }
     }
 
-    public void setController(DatePickerController mController, SimpleMonthAdapter.CalendarDay startDay, SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> range) {
+    public void setController(DatePickerController mController, SimpleMonthAdapter.CalendarDay startDay, int mode,
+                              SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> range) {
         this.mController = mController;
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(this);//这里放置的是的recycleview
-        setUpAdapter(startDay, range);
+        setUpAdapter(startDay, mode,range);
         setAdapter(mAdapter);
         smoothToCurrentMonth();
     }
@@ -106,9 +108,10 @@ public class DayPickerView extends RecyclerView {
     }
 
 
-    protected void setUpAdapter(SimpleMonthAdapter.CalendarDay startDay, SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> range) {
+    protected void setUpAdapter(SimpleMonthAdapter.CalendarDay startDay, int mode, SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> range) {
         if (mAdapter == null) {
             mAdapter = new SimpleMonthAdapter(getContext(), mController, typedArray);
+            mAdapter.setMode(mode);
             if (startDay != null) {
                 mAdapter.setSelectedDay(startDay);
             }

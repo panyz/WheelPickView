@@ -99,6 +99,7 @@ class SimpleMonthView extends View {
     private DateFormatSymbols mDateFormatSymbols = new DateFormatSymbols();
 
     private OnDayClickListener mOnDayClickListener;
+    private boolean isSingleChoose;
 
     public SimpleMonthView(Context context, TypedArray typedArray) {
         super(context);
@@ -198,7 +199,9 @@ class SimpleMonthView extends View {
             boolean isInSelectRange = false;
             mMonthNumPaint.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             int x = paddingDay * (1 + dayOffset * 2) + mPadding;
-            if ((mMonth == mSelectedBeginMonth && mSelectedBeginDay == day && mSelectedBeginYear == mYear) || (mMonth == mSelectedLastMonth && mSelectedLastDay == day && mSelectedLastYear == mYear)) {
+
+            if ((mMonth == mSelectedBeginMonth && mSelectedBeginDay == day && mSelectedBeginYear == mYear) ||
+                    (mMonth == mSelectedLastMonth && mSelectedLastDay == day && mSelectedLastYear == mYear)) {
                 if (mDrawRect) {
                     RectF rectF = new RectF(x - DAY_SELECTED_CIRCLE_SIZE * 1.7f, (y - MINI_DAY_NUMBER_TEXT_SIZE / 3) - DAY_SELECTED_CIRCLE_SIZE,
                             x + DAY_SELECTED_CIRCLE_SIZE * 1.7f, (y - MINI_DAY_NUMBER_TEXT_SIZE / 3) + DAY_SELECTED_CIRCLE_SIZE);
@@ -215,7 +218,8 @@ class SimpleMonthView extends View {
 //                mMonthNumPaint.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             }
 
-            if ((mMonth == mSelectedBeginMonth && mSelectedBeginDay == day && mSelectedBeginYear == mYear) || (mMonth == mSelectedLastMonth && mSelectedLastDay == day && mSelectedLastYear == mYear))
+            if ((mMonth == mSelectedBeginMonth && mSelectedBeginDay == day && mSelectedBeginYear == mYear) ||
+                    (mMonth == mSelectedLastMonth && mSelectedLastDay == day && mSelectedLastYear == mYear))
                 mMonthNumPaint.setColor(mMonthTitleBGColor);
 
             if ((mSelectedBeginDay != -1 && mSelectedLastDay != -1 && mSelectedBeginYear == mSelectedLastYear &&
@@ -261,7 +265,7 @@ class SimpleMonthView extends View {
 //                mMonthNumPaint.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
             }
 
-            if (isInSelectRange) {
+            if (isInSelectRange && !isSingleChoose) {
                 RectF rectF = new RectF(x - DAY_SELECTED_CIRCLE_SIZE * 2, (y - MINI_DAY_NUMBER_TEXT_SIZE / 3) - DAY_SELECTED_CIRCLE_SIZE,
                         x + DAY_SELECTED_CIRCLE_SIZE * 2, (y - MINI_DAY_NUMBER_TEXT_SIZE / 3) + DAY_SELECTED_CIRCLE_SIZE);
                 mSelectedRangePaint.setColor(ContextCompat.getColor(getContext(), R.color.color_E8ECF2));
@@ -358,7 +362,6 @@ class SimpleMonthView extends View {
             SimpleMonthAdapter.CalendarDay calendarDay = getDayFromLocation(event.getX(), event.getY());
             if (calendarDay != null) {
                 onDayClick(calendarDay);
-                System.out.println(calendarDay.toString());
             }
         }
         return true;
@@ -433,6 +436,10 @@ class SimpleMonthView extends View {
 
     public void setOnDayClickListener(OnDayClickListener onDayClickListener) {
         mOnDayClickListener = onDayClickListener;
+    }
+
+    public void setSingleChoose(boolean isSingleChoose) {
+        this.isSingleChoose = isSingleChoose;
     }
 
     public interface OnDayClickListener {

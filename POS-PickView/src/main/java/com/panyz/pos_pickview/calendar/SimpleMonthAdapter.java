@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 
-
 public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.ViewHolder> implements SimpleMonthView.OnDayClickListener {
     protected static final int MONTHS_IN_YEAR = 12;
     private final TypedArray typedArray;
@@ -27,6 +26,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     private SelectedDays<CalendarDay> selectedDays;
     private final Integer firstMonth;
     private final Integer lastMonth;
+    private int mode;
 
     public SimpleMonthAdapter(Context context, DatePickerController datePickerController, TypedArray typedArray) {
         this.typedArray = typedArray;
@@ -43,7 +43,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         final SimpleMonthView simpleMonthView = new SimpleMonthView(mContext, typedArray);
-        return new ViewHolder(simpleMonthView, this);
+        return new ViewHolder(simpleMonthView, this, mode);
     }
 
     @Override
@@ -69,20 +69,24 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
             selectedFirstYear = selectedDays.getFirst().year;
         }
 
+
         if (selectedDays.getLast() != null) {
             selectedLastDay = selectedDays.getLast().day;
             selectedLastMonth = selectedDays.getLast().month;
             selectedLastYear = selectedDays.getLast().year;
         }
 
+
         v.reuse();
 
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_SELECTED_BEGIN_YEAR, selectedFirstYear);
-        drawingParams.put(SimpleMonthView.VIEW_PARAMS_SELECTED_LAST_YEAR, selectedLastYear);
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_SELECTED_BEGIN_MONTH, selectedFirstMonth);
-        drawingParams.put(SimpleMonthView.VIEW_PARAMS_SELECTED_LAST_MONTH, selectedLastMonth);
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_SELECTED_BEGIN_DAY, selectedFirstDay);
+
+        drawingParams.put(SimpleMonthView.VIEW_PARAMS_SELECTED_LAST_YEAR, selectedLastYear);
+        drawingParams.put(SimpleMonthView.VIEW_PARAMS_SELECTED_LAST_MONTH, selectedLastMonth);
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_SELECTED_LAST_DAY, selectedLastDay);
+
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_YEAR, year);
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_MONTH, month);
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_WEEK_START, calendar.getFirstDayOfWeek());
@@ -107,13 +111,18 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         return itemCount;
     }
 
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final SimpleMonthView simpleMonthView;
 
-        public ViewHolder(View itemView, SimpleMonthView.OnDayClickListener onDayClickListener) {
+        public ViewHolder(View itemView, SimpleMonthView.OnDayClickListener onDayClickListener, int mode) {
             super(itemView);
             simpleMonthView = (SimpleMonthView) itemView;
             simpleMonthView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            simpleMonthView.setSingleChoose(mode == DatePickView.MODE_SINGLE);
             simpleMonthView.setClickable(true);
             simpleMonthView.setOnDayClickListener(onDayClickListener);
         }
@@ -136,20 +145,26 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     }
 
     public void setSelectedDay(CalendarDay calendarDay) {
-        if (selectedDays.getFirst() != null && selectedDays.getLast() == null) {
+        if (mode == DatePickView.MODE_SINGLE) {
+            selectedDays.setFirst(calendarDay);
             selectedDays.setLast(calendarDay);
+        } else {
+            if (selectedDays.getFirst() != null && selectedDays.getLast() == null) {
+                selectedDays.setLast(calendarDay);
 
-            if (selectedDays.getFirst().month < calendarDay.month) {
-                for (int i = 0; i < selectedDays.getFirst().month - calendarDay.month - 1; ++i)
-                    mController.onDayOfMonthSelected(selectedDays.getFirst().year, selectedDays.getFirst().month + i, selectedDays.getFirst().day);
+                if (selectedDays.getFirst().month < calendarDay.month) {
+                    for (int i = 0; i < selectedDays.getFirst().month - calendarDay.month - 1; ++i)
+                        mController.onDayOfMonthSelected(selectedDays.getFirst().year, selectedDays.getFirst().month + i, selectedDays.getFirst().day);
+                }
+
+                mController.onDateRangeSelected(selectedDays);
+            } else if (selectedDays.getLast() != null) {
+                selectedDays.setFirst(calendarDay);
+                selectedDays.setLast(null);
+            } else {
+                selectedDays.setFirst(calendarDay);
             }
-
-            mController.onDateRangeSelected(selectedDays);
-        } else if (selectedDays.getLast() != null) {
-            selectedDays.setFirst(calendarDay);
-            selectedDays.setLast(null);
-        } else
-            selectedDays.setFirst(calendarDay);
+        }
 
         notifyDataSetChanged();
     }

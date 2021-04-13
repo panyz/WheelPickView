@@ -35,23 +35,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
+                android:gravity="center"
+                android:minWidth="@dimen/dp_60"
+                android:text="-"
                 android:textColor="@color/color_63676B"
                 android:textSize="@dimen/sp_12"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/label_start_date"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="2020.04.01" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/label_start_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="起始时间"
+                android:text="@string/pickerview_start_date_label"
                 android:textColor="@color/color_989A9D"
                 android:textSize="@dimen/sp_10"
                 app:layout_constraintEnd_toEndOf="@+id/tv_start_date"
-                app:layout_constraintStart_toStartOf="@+id/tv_start_date"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_start_date" />
 
             <View
@@ -70,19 +72,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_12"
                 android:layout_marginTop="@dimen/dp_12"
+                android:gravity="center"
+                android:minWidth="@dimen/dp_60"
+                android:text="-"
                 android:textColor="@color/color_63676B"
                 android:textSize="@dimen/sp_12"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/label_end_date"
                 app:layout_constraintStart_toEndOf="@+id/lien_date"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="2020.04.07" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/label_end_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="结束时间"
+                android:text="@string/pickerview_end_date_label"
                 android:textColor="@color/color_989A9D"
                 android:textSize="@dimen/sp_10"
                 app:layout_constraintEnd_toEndOf="@+id/tv_end_date"
@@ -144,7 +148,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="日"
+            android:text="@string/pickerview_sunday"
             android:textColor="@color/color_63676B"
             android:textSize="@dimen/sp_16" />
 
@@ -153,7 +157,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="一"
+            android:text="@string/pickerview_monday"
             android:textColor="@color/color_63676B"
             android:textSize="@dimen/sp_16" />
 
@@ -162,7 +166,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="二"
+            android:text="@string/pickerview_tuesday"
             android:textColor="@color/color_63676B"
             android:textSize="@dimen/sp_16" />
 
@@ -171,7 +175,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="三"
+            android:text="@string/pickerview_wednesday"
             android:textColor="@color/color_63676B"
             android:textSize="@dimen/sp_16" />
 
@@ -180,7 +184,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="四"
+            android:text="@string/pickerview_thursday"
             android:textColor="@color/color_63676B"
             android:textSize="@dimen/sp_16" />
 
@@ -189,7 +193,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="五"
+            android:text="@string/pickerview_friday"
             android:textColor="@color/color_63676B"
             android:textSize="@dimen/sp_16" />
 
@@ -198,7 +202,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="六"
+            android:text="@string/pickerview_saturday"
             android:textColor="@color/color_63676B"
             android:textSize="@dimen/sp_16" />
 
