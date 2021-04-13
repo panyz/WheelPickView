@@ -13,10 +13,18 @@
 
     <color name="color_F4F4F6">#F4F4F6</color>
     <color name="color_272C32">#272C32</color>
+    <color name="color_55272C32">#55272C32</color>
     <color name="color_E8ECF2">#E8ECF2</color>
     <color name="color_0078FF">#0078FF</color>
     <color name="color_ffffff">#FFFFFF</color>
     <color name="color_B6D8FF">#B6D8FF</color>
     <color name="color_469BFA">#469BFA</color>
+
+    <color name="normal_day">#3b3b3b</color>
+    <color name="month_text">#ff7787</color>
+    <color name="selected_day_background">#ff5166</color>
+    <color name="selected_day_text">#ffffff</color>
+    <color name="color_989A9D">#989A9D</color>
+    <color name="color_63676B">#63676B</color>
 
 </resources>
