@@ -58,29 +58,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showDatePickView() {
-//        SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> mSelectRange = new SimpleMonthAdapter.SelectedDays<>();
-//        mSelectRange.setFirst(new SimpleMonthAdapter.CalendarDay(strToCalander(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))));
-//        mSelectRange.setLast(new SimpleMonthAdapter.CalendarDay(strToCalander(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))));
 
-        String currentDate = dateFormat.format(new Date());
-        String mStartDay = getFirstDayOfMonth(Integer.parseInt(currentDate.split("-")[1]));
-        String mEndDay = getLastDayOfMonth(Integer.parseInt(currentDate.split("-")[1]));
+//        String currentDate = dateFormat.format(new Date());
+        String mStartDay = getFirstDayOfMonth(2);
+        String mEndDay = getLastDayOfMonth(5);
 
         SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> mSelectRange = new SimpleMonthAdapter.SelectedDays<>();
         mSelectRange.setFirst(new SimpleMonthAdapter.CalendarDay(strToCalander(mStartDay)));
-        mSelectRange.setLast(new SimpleMonthAdapter.CalendarDay(strToCalander(mEndDay)));
+//        mSelectRange.setLast(new SimpleMonthAdapter.CalendarDay(strToCalander(mEndDay)));
 
-        DatePickView datePickView = new DatePickView.Builder(this)
-                .mode(DatePickView.MODE_RANGE)
+        new DatePickView.Builder(this)
+                .mode(DatePickView.MODE_SINGLE)
                 .dateRange(mSelectRange)
-                .build();
-        datePickView.setOnDateSelectedListener(new DatePickView.OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> mSelectData) {
-                Toast.makeText(MainActivity.this, mSelectData.getFirst().toString() + "-" + mSelectData.getLast().toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-        datePickView.show();
+                .onDateSelectedListener(new DatePickView.OnDateSelectedListener() {
+                    @Override
+                    public void onDateSelected(SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> mSelectData) {
+                        Toast.makeText(MainActivity.this, mSelectData.getFirst().toString(), Toast.LENGTH_LONG).show();
+                    }
+                })
+                .show();
+
     }
 
     private void showPickView() {

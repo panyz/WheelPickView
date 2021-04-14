@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 
 import com.panyz.pos_pickview.R;
@@ -63,16 +64,13 @@ public class DatePickView implements DatePickerController, View.OnClickListener 
     private String cancelText;
     private String submitText;
 
-    public void setOnDateSelectedListener(OnDateSelectedListener onDateSelectedListener) {
-        this.onDateSelectedListener = onDateSelectedListener;
-    }
-
     public DatePickView(Builder builder) {
         this.context = builder.context;
         this.mode = builder.mode;
         this.titleText = builder.titleText;
         this.cancelText = builder.cancelText;
         this.submitText = builder.submitText;
+        this.onDateSelectedListener = builder.onDateSelectedListener;
         if (builder.dateRange != null) {
             mRange = builder.dateRange;
         }
@@ -93,7 +91,7 @@ public class DatePickView implements DatePickerController, View.OnClickListener 
         contentContainer = rootView.findViewById(R.id.content_container);
         contentContainer.setLayoutParams(params);
         setKeyBackCancelable(true);
-        setOutSideCancelable(true);
+        setOutSideCancelable(false);
     }
 
     private void initAnim() {
@@ -125,17 +123,22 @@ public class DatePickView implements DatePickerController, View.OnClickListener 
             tvTitle.setText(R.string.pickerview_date_range);
         }
 
+        dayPickView = contentContainer.findViewById(R.id.day_pick_view);
+        dayPickView.setController(this, mStartDay, mode, this.mRange);
+
+
         mCalendar = Calendar.getInstance();
+        if (mRange != null) {
+            setSelectDays(mRange.getFirst(), mRange.getLast());
+            if (mRange.getFirst() != null) {
+                mCalendar.set(Calendar.MONTH, mRange.getFirst().month);
+            }
+        }
+
         StringBuilder stringBuilder = new StringBuilder(getMonthAndYearString().toLowerCase());
         stringBuilder.setCharAt(0, Character.toUpperCase(stringBuilder.charAt(0)));
         tvYearMonth.setText(stringBuilder.toString());
 
-        dayPickView = contentContainer.findViewById(R.id.day_pick_view);
-        dayPickView.setController(this, mStartDay, mode,this.mRange);
-
-        if (mRange != null) {
-            setSelectDays(mRange.getFirst(), mRange.getLast());
-        }
         if (titleText != null) {
             tvTitle.setText(titleText);
         }
@@ -264,25 +267,32 @@ public class DatePickView implements DatePickerController, View.OnClickListener 
             mSelectDay = new SimpleMonthAdapter.SelectedDays<>();
         }
 
-        if (start != null && end != null) {
-            String date1 = sdf.format(start.getDate());
-            String date2 = sdf.format(end.getDate());
+        if (mode == MODE_RANGE) {
+            if (start != null && end != null) {
+                String date1 = sdf.format(start.getDate());
+                String date2 = sdf.format(end.getDate());
 
-            Calendar calendar1 = strToCalander(date1);
-            Calendar calendar2 = strToCalander(date2);
+                Calendar calendar1 = strToCalander(date1);
+                Calendar calendar2 = strToCalander(date2);
 
-            if (calendar1.before(calendar2)) {
-                mSelectDay.setFirst(start);
-                mSelectDay.setLast(end);
-                tvStartDate.setText(date1);
-                tvEndDate.setText(date2);
-            } else {
-                mSelectDay.setFirst(end);
-                mSelectDay.setLast(start);
-                tvStartDate.setText(date2);
-                tvEndDate.setText(date1);
+                if (calendar1.before(calendar2)) {
+                    mSelectDay.setFirst(start);
+                    mSelectDay.setLast(end);
+                    tvStartDate.setText(date1);
+                    tvEndDate.setText(date2);
+                } else {
+                    mSelectDay.setFirst(end);
+                    mSelectDay.setLast(start);
+                    tvStartDate.setText(date2);
+                    tvEndDate.setText(date1);
+                }
             }
+        } else {
+            mSelectDay.setFirst(start);
+            mSelectDay.setLast(start);
         }
+
+
 
     }
 
@@ -374,10 +384,11 @@ public class DatePickView implements DatePickerController, View.OnClickListener 
     public static class Builder {
         private Context context;
         private int mode = 0;
-        private SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> dateRange;
         private String titleText;
         private String cancelText;
         private String submitText;
+        private SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> dateRange;
+        private OnDateSelectedListener onDateSelectedListener;
 
 
         public Builder(Context context) {
@@ -409,13 +420,19 @@ public class DatePickView implements DatePickerController, View.OnClickListener 
             return this;
         }
 
+        public Builder onDateSelectedListener(OnDateSelectedListener onDateSelectedListener) {
+            this.onDateSelectedListener = onDateSelectedListener;
+            return this;
+        }
 
-        public DatePickView build() {
-            return new DatePickView(this);
+
+        public DatePickView show() {
+            DatePickView datePickView = new DatePickView(this);
+            datePickView.show();
+            return datePickView;
         }
 
     }
-
 
 
 }
